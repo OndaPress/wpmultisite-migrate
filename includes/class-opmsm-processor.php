@@ -192,7 +192,8 @@ class OPMSM_Processor
 
         foreach ($old_users as $old_user) {
             // Check if user already exists
-            $existing_user = get_user_by('email', $old_user->user_login);
+            $existing_user = get_user_by('email', $old_user->user_email);
+            
             if ($existing_user) {
                 $new_user_id = $existing_user->ID;
             } else {
@@ -235,6 +236,9 @@ class OPMSM_Processor
                 // Handle capabilities prefix change
                 if ($meta->meta_key === $this->sourcePrefix . 'capabilities') {
                     $meta->meta_key = $this->targetPrefix . 'capabilities';
+                }
+                elseif ($meta->meta_key === $this->sourcePrefix . 'user_roles') {
+                    $meta->meta_key = $this->targetPrefix . 'user_roles';
                 }
 
                 // Insert user meta (no need for the in_array check anymore since we filtered at DB level)
